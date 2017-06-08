@@ -1,4 +1,5 @@
 package example.com.paddelwear;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +20,12 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Integer tag = (Integer) v.getTag();
-                switch (tag){
+                switch (tag) {
                     case 1:
                         startActivity(new Intent(MainActivity.this, Confirmation.class));
+                        break;
+                    case 4:
+                        startActivity(new Intent(MainActivity.this, Steps.class));
                         break;
                 }
             }
