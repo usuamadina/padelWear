@@ -2,9 +2,7 @@ package example.com.paddelwear;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.wearable.view.CurvedChildLayoutManager;
 import android.support.wearable.view.WearableRecyclerView;
-import android.util.Log;
 import android.view.View;
 
 public class MainActivity extends Activity {
@@ -31,5 +29,8 @@ public class MainActivity extends Activity {
         list.setAdapter(myAdapter);
         list.setCenterEdgeItems(true);
         list.setLayoutManager(new MyChildLayoutManager(this));
+        list.setCircularScrollingGestureEnabled(true);
+        list.setScrollDegreesPerScreen(180);
+        list.setBezelWidth(0.5f);
     }
 }
