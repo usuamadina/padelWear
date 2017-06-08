@@ -1,14 +1,12 @@
 package example.com.paddelwear;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.wearable.view.WearableRecyclerView;
+import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
-
 
 public class MainActivity extends Activity {
-// Elementos a mostrar en la lista
 
     String[] elements = {"Partida", "Terminar partida", "Historial", "Notificación", "Pasos", "Pulsaciones", "Terminar partida"};
 
@@ -22,10 +20,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Integer tag = (Integer) v.getTag();
-                Toast.makeText(MainActivity.this, "Elegida opción:" + tag, Toast.LENGTH_SHORT).show();
+                switch (tag){
+                    case 1:
+                        startActivity(new Intent(MainActivity.this, Confirmation.class));
+                        break;
+                }
             }
         });
         lista.setAdapter(myAdapter);
     }
-
 }
