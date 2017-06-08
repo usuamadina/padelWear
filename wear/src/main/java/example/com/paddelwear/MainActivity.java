@@ -2,6 +2,7 @@ package example.com.paddelwear;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.wearable.view.CurvedChildLayoutManager;
 import android.support.wearable.view.WearableRecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +15,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        WearableRecyclerView lista = (WearableRecyclerView) findViewById(R.id.list);
+        WearableRecyclerView list = (WearableRecyclerView) findViewById(R.id.list);
         MyAdapter myAdapter = new MyAdapter(this, elements);
         myAdapter.setOnItemClickListener(new View.OnClickListener() {
             @Override
@@ -27,6 +28,8 @@ public class MainActivity extends Activity {
                 }
             }
         });
-        lista.setAdapter(myAdapter);
+        list.setAdapter(myAdapter);
+        list.setCenterEdgeItems(true);
+        list.setLayoutManager(new CurvedChildLayoutManager(this));
     }
 }
