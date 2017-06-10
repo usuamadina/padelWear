@@ -24,6 +24,9 @@ public class MainActivity extends Activity {
                     case 1:
                         startActivity(new Intent(MainActivity.this, Confirmation.class));
                         break;
+                    case 2:
+                        startActivity(new Intent(MainActivity.this, MatchHistory.class));
+                        break;
                     case 4:
                         startActivity(new Intent(MainActivity.this, Steps.class));
                         break;

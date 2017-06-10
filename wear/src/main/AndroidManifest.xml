@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".Confirmation"/>
         <activity android:name=".Steps"/>
+        <activity android:name=".MatchHistory"/>
     </application>
 
 </manifest>
