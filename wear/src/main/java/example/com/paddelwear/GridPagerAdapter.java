@@ -23,7 +23,7 @@ public class GridPagerAdapter extends FragmentGridPagerAdapter {
 
     @Override
     public android.app.Fragment getFragment(int fila, int col) {
-        int icono = R.drawable.foot_steps;
+        int icono = R.drawable.foot_steps64;
         if ((col == 0) || ((col - 1) % 2 == 0)) {
             if ((c[fila][col].charAt(0) >= c[fila][col].charAt(2))) {
                 icono = R.drawable.happy_andy;

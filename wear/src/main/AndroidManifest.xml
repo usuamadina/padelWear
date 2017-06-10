@@ -21,6 +21,7 @@
         <activity android:name=".Confirmation"/>
         <activity android:name=".Steps"/>
         <activity android:name=".MatchHistory"/>
+        <activity android:name=".Countdown"/>
     </application>
 
 </manifest>
