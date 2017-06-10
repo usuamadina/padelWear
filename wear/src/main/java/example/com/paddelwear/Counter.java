@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.wearable.activity.WearableActivity;
 import android.support.wearable.view.DismissOverlayView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -18,7 +19,7 @@ import example.com.common.Partida;
  * Created by usuwi on 10/06/2017.
  */
 
-public class Counter extends Activity {
+public class Counter extends WearableActivity {
     private Partida match;
     private TextView myPoints, myGames, mySets, theirPoints, theirGames, theirSets;
     private Vibrator vibrator;
@@ -26,10 +27,15 @@ public class Counter extends Activity {
     private long[] vibrDeshacer = {0l, 500, 500, 500};
     private DismissOverlayView dismissOverlay;
 
+    private Typeface normalFont = Typeface.create("sans-serif", 0);
+    private Typeface thinFont = Typeface.create
+            ("sans-serif-thin", 0);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.counter);
+        setAmbientEnabled();
         dismissOverlay = (DismissOverlayView) findViewById(R.id.dismiss_overlay);
         dismissOverlay.setIntroText("Para salir de la aplicación, haz una pulsación larga");
         dismissOverlay.showIntroIfNecessary();
@@ -131,5 +137,44 @@ public class Counter extends Activity {
         theirGames.setText(match.getSusJuegos());
         mySets.setText(match.getMisSets());
         theirSets.setText(match.getSusSets());
+    }
+
+    @Override
+    public void onEnterAmbient(Bundle ambientDetails) {
+        super.onEnterAmbient(ambientDetails);
+        myPoints.setTypeface(thinFont);
+        myPoints.getPaint().setAntiAlias(false);
+        mySets.setTypeface(thinFont);
+        myPoints.getPaint().setAntiAlias(false);
+        myGames.setTypeface(thinFont);
+        myGames.getPaint().setAntiAlias(false);
+
+        theirPoints.setTypeface(thinFont);
+        theirPoints.getPaint().setAntiAlias(false);
+        theirSets.setTypeface(thinFont);
+        theirPoints.getPaint().setAntiAlias(false);
+        theirGames.setTypeface(thinFont);
+        theirGames.getPaint().setAntiAlias(false);
+
+
+    }
+
+    @Override
+    public void onExitAmbient() {
+        super.onExitAmbient();
+        myPoints.setTypeface(normalFont);
+        myPoints.getPaint().setAntiAlias(false);
+        mySets.setTypeface(normalFont);
+        myPoints.getPaint().setAntiAlias(false);
+        myGames.setTypeface(normalFont);
+        myGames.getPaint().setAntiAlias(false);
+
+        theirPoints.setTypeface(normalFont);
+        theirPoints.getPaint().setAntiAlias(false);
+        theirSets.setTypeface(normalFont);
+        theirPoints.getPaint().setAntiAlias(false);
+        theirGames.setTypeface(normalFont);
+        theirGames.getPaint().setAntiAlias(false);
+
     }
 }
