@@ -14,6 +14,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.Wearable;
+
 import java.util.Date;
 
 import example.com.common.DireccionesGestureDetector;
@@ -35,6 +42,9 @@ public class Counter extends WearableActivity {
     private Typeface thinFont = Typeface.create
             ("sans-serif-thin", 0);
     private Calendar c;
+
+    private static final String START_MOBILE_ACTIVITY="/arrancar_actividad";
+    private GoogleApiClient apiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +74,9 @@ public class Counter extends WearableActivity {
         theirSets.setTextColor(Color.GREEN);
         actualizaNumeros();
         View fondo = findViewById(R.id.background);
+
+        apiClient = new GoogleApiClient.Builder(this).addApi(Wearable.API).build();
+        sendMessage(START_MOBILE_ACTIVITY, "Arrancar actividad en el móvil");
 
         // Configuramos el detector de pulsaciones
 
@@ -221,5 +234,38 @@ public class Counter extends WearableActivity {
         super.onUpdateAmbient();
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        apiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        if (apiClient != null && apiClient.isConnected()) {
+            apiClient.disconnect();
+        }
+        super.onStop();
+    }
+
+    private void sendMessage(final String path, final String text) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(apiClient).await();
+                for (Node nodo : nodes.getNodes()) {
+                    Wearable.MessageApi.sendMessage(apiClient, nodo.getId(), path, text.getBytes()).setResultCallback(new ResultCallback<MessageApi.SendMessageResult>() {
+                        @Override
+                        public void onResult(MessageApi.SendMessageResult resultado) {
+                            if (!resultado.getStatus().isSuccess()) {
+                                Log.e("sincronizacion", "Error al mandar mensaje. Código:" + resultado.getStatus().getStatusCode());
+                            }
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 }

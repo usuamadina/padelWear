@@ -2,19 +2,23 @@ package example.com.paddelwear;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.wearable.activity.WearableActivity;
 import android.support.wearable.view.WearableRecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.MessageEvent;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
 public class MainActivity extends WearableActivity {
 
     String[] elements = {"Partida", "Terminar partida", "Historial", "Notificación", "Pasos", "Pulsaciones", "Terminar partida"};
-
-    private static final String WEAR_SEND_TEXT = "/mandar_texto";
-    private GoogleApiClient apiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,22 +53,6 @@ public class MainActivity extends WearableActivity {
         list.setScrollDegreesPerScreen(180);
         list.setBezelWidth(0.5f);
 
-
-        apiClient = new GoogleApiClient.Builder(this).addApi(Wearable.API).build();
-
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        apiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        if (apiClient != null && apiClient.isConnected()) {
-            apiClient.disconnect();
-        }
-        super.onStop();
-    }
 }
