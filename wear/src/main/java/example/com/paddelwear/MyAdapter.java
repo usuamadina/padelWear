@@ -25,7 +25,8 @@ final class MyAdapter extends WearableRecyclerView.Adapter {
         this.contexto = contexto;
         this.datos = datos;
         inflador = LayoutInflater.from(contexto);
-    } //Creamos nuestro ViewHolder, con los tipos de elementos a modificar
+    }
+    //Creamos nuestro ViewHolder, con los tipos de elementos a modificar
 
     public static class ItemViewHolder extends WearableRecyclerView.ViewHolder {
         private TextView textView;

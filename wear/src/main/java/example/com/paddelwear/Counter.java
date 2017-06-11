@@ -1,16 +1,20 @@
 package example.com.paddelwear;
 
-import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.wearable.activity.WearableActivity;
 import android.support.wearable.view.DismissOverlayView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+
+import java.util.Date;
 
 import example.com.common.DireccionesGestureDetector;
 import example.com.common.Partida;
@@ -21,7 +25,7 @@ import example.com.common.Partida;
 
 public class Counter extends WearableActivity {
     private Partida match;
-    private TextView myPoints, myGames, mySets, theirPoints, theirGames, theirSets;
+    private TextView myPoints, myGames, mySets, theirPoints, theirGames, theirSets, time;
     private Vibrator vibrator;
     private long[] vibrEntrada = {0l, 500};
     private long[] vibrDeshacer = {0l, 500, 500, 500};
@@ -30,6 +34,7 @@ public class Counter extends WearableActivity {
     private Typeface normalFont = Typeface.create("sans-serif", 0);
     private Typeface thinFont = Typeface.create
             ("sans-serif-thin", 0);
+    private Calendar c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +46,22 @@ public class Counter extends WearableActivity {
         dismissOverlay.showIntroIfNecessary();
 
         match = new Partida();
+
+        time = (TextView) findViewById(R.id.time);
+        c = Calendar.getInstance();
         vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         myPoints = (TextView) findViewById(R.id.myPoints);
+        myPoints.setTextColor(Color.GREEN);
         theirPoints = (TextView) findViewById(R.id.theirPoints);
+        theirPoints.setTextColor(Color.GREEN);
         myGames = (TextView) findViewById(R.id.myGames);
+        myGames.setTextColor(Color.GREEN);
         theirGames = (TextView) findViewById(R.id.theirGames);
+        theirGames.setTextColor(Color.GREEN);
         mySets = (TextView) findViewById(R.id.mySets);
+        mySets.setTextColor(Color.GREEN);
         theirSets = (TextView) findViewById(R.id.theirSets);
+        theirSets.setTextColor(Color.GREEN);
         actualizaNumeros();
         View fondo = findViewById(R.id.background);
 
@@ -143,38 +157,69 @@ public class Counter extends WearableActivity {
     public void onEnterAmbient(Bundle ambientDetails) {
         super.onEnterAmbient(ambientDetails);
         myPoints.setTypeface(thinFont);
+        myPoints.setTextColor(Color.WHITE);
         myPoints.getPaint().setAntiAlias(false);
         mySets.setTypeface(thinFont);
-        myPoints.getPaint().setAntiAlias(false);
+        mySets.getPaint().setAntiAlias(false);
+        mySets.setTextColor(Color.WHITE);
         myGames.setTypeface(thinFont);
+        myGames.setTextColor(Color.WHITE);
         myGames.getPaint().setAntiAlias(false);
 
+
         theirPoints.setTypeface(thinFont);
+        theirPoints.setTextColor(Color.WHITE);
         theirPoints.getPaint().setAntiAlias(false);
         theirSets.setTypeface(thinFont);
-        theirPoints.getPaint().setAntiAlias(false);
+        theirSets.setTextColor(Color.WHITE);
+        theirSets.getPaint().setAntiAlias(false);
         theirGames.setTypeface(thinFont);
+        theirGames.setTextColor(Color.WHITE);
         theirGames.getPaint().setAntiAlias(false);
 
 
+        setHour();
+        time.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onExitAmbient() {
         super.onExitAmbient();
         myPoints.setTypeface(normalFont);
-        myPoints.getPaint().setAntiAlias(false);
+        myPoints.setTextColor(Color.GREEN);
+        myPoints.getPaint().setAntiAlias(true);
         mySets.setTypeface(normalFont);
-        myPoints.getPaint().setAntiAlias(false);
+        mySets.setTextColor(Color.GREEN);
+        mySets.getPaint().setAntiAlias(true);
         myGames.setTypeface(normalFont);
-        myGames.getPaint().setAntiAlias(false);
+        myGames.setTextColor(Color.GREEN);
+        myGames.getPaint().setAntiAlias(true);
 
         theirPoints.setTypeface(normalFont);
-        theirPoints.getPaint().setAntiAlias(false);
+        theirPoints.setTextColor(Color.GREEN);
+        theirPoints.getPaint().setAntiAlias(true);
         theirSets.setTypeface(normalFont);
-        theirPoints.getPaint().setAntiAlias(false);
+        theirSets.setTextColor(Color.GREEN);
+        theirSets.getPaint().setAntiAlias(true);
         theirGames.setTypeface(normalFont);
-        theirGames.getPaint().setAntiAlias(false);
+        theirGames.setTextColor(Color.GREEN);
+        theirGames.getPaint().setAntiAlias(true);
+        time.setVisibility(View.GONE);
+
+    }
+
+    public void setHour(){
+        c.setTime(new Date());
+        time.setText(c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
+        Log.e("Counter","setHour : " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
+    }
+
+    @Override
+    public void onUpdateAmbient() {
+        Log.e("Counter", "onUpdateAmbient");
+        setHour();
+        super.onUpdateAmbient();
+
 
     }
 }
