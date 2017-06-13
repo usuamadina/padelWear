@@ -9,7 +9,7 @@ import android.view.View;
 
 public class MainActivity extends WearableActivity {
 
-    String[] elements = {"Partida", "Terminar partida", "Historial","Jugadores", "Notificación", "Pasos", "Pulsaciones", "Terminar partida"};
+    String[] elements = {"Partida", "Terminar partida", "Historial","Jugadores", "Notificación", "Pasos", "Pasos2", "Pulsaciones", "Terminar partida"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,9 @@ public class MainActivity extends WearableActivity {
                         break;
                     case 4:
                         startActivity(new Intent(MainActivity.this, Steps.class));
+                        break;
+                    case 6:
+                        startActivity(new Intent(MainActivity.this,Steps2.class));
                         break;
                 }
             }
