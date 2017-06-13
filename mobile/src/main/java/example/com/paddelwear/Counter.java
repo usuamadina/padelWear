@@ -12,10 +12,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataItem;
+import com.google.android.gms.wearable.DataItemBuffer;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageApi;
@@ -121,10 +124,41 @@ public class Counter extends Activity implements GoogleApiClient.ConnectionCallb
                 return true;
             }
         });
+
+        PendingResult<DataItemBuffer> result = Wearable.DataApi.getDataItems(apiClient);
+        result.setResultCallback(new ResultCallback<DataItemBuffer>() {
+            @Override
+            public void onResult(DataItemBuffer dataItems) {
+                DataMap dataMap = new DataMap();
+                for (DataItem dataItem : dataItems) {
+                    if (dataItem.getUri().getPath().equals(WEAR_SCORE)) {
+                        final int myPoints = dataMap.getInt(KEY_MY_POINTS);
+                        final int myGames = dataMap.getInt(KEY_MY_GAMES);
+                        final int mySets = dataMap.getInt(KEY_MY_SETS);
+                        final int theirPoints = dataMap.getInt(KEY_THEIR_POINTS);
+                        final int theirGames = dataMap.getInt(KEY_THEIR_GAMES);
+                        final int theirSets = dataMap.getInt(KEY_THEIR_SETS);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((TextView) findViewById(R.id.misPuntos)).setText(Integer.toString(myPoints));
+                                ((TextView) findViewById(R.id.misJuegos)).setText(Integer.toString(myGames));
+                                ((TextView) findViewById(R.id.misSets)).setText(Integer.toString(mySets));
+                                ((TextView) findViewById(R.id.susPuntos)).setText(Integer.toString(theirPoints));
+                                ((TextView) findViewById(R.id.susSets)).setText(Integer.toString(theirGames));
+                                ((TextView) findViewById(R.id.susJuegos)).setText(Integer.toString(theirSets));
+                            }
+                        });
+                    }
+                }
+                dataItems.release();
+            }
+        });
+
     }
 
     void actualizaNumeros() {
-        Log.d("MobileCounter","ActualizaNumeros");
+        Log.d("MobileCounter", "ActualizaNumeros");
         misPuntos.setText(partida.getMisPuntos());
         susPuntos.setText(partida.getSusPuntos());
         misJuegos.setText(partida.getMisJuegos());
@@ -136,21 +170,21 @@ public class Counter extends Activity implements GoogleApiClient.ConnectionCallb
     @Override
     protected void onStart() {
         super.onStart();
-        Log.e("MobileCounter","onStart");
+        Log.e("MobileCounter", "onStart");
         apiClient.connect();
         Wearable.DataApi.addListener(apiClient, this);
     }
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.e("MobileCounter","onConnected");
+        Log.e("MobileCounter", "onConnected");
         Wearable.DataApi.addListener(apiClient, this);
     }
 
     @Override
     protected void onStop() {
         Wearable.DataApi.removeListener(apiClient, this);
-        Log.e("MobileCounter","onStop(), desconectado escuchador");
+        Log.e("MobileCounter", "onStop(), desconectado escuchador");
         super.onStop();
     }
 
@@ -161,7 +195,7 @@ public class Counter extends Activity implements GoogleApiClient.ConnectionCallb
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        Log.e("MobileCounter","mensajeRecibido");
+        Log.e("MobileCounter", "mensajeRecibido");
 
     }
 
@@ -170,10 +204,10 @@ public class Counter extends Activity implements GoogleApiClient.ConnectionCallb
         DataMap dataMap;
         for (DataEvent event : events) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
-                Log.e("MobileCounter","Ha habido evento de cambio");
+                Log.e("MobileCounter", "Ha habido evento de cambio");
                 DataItem item = event.getDataItem();
                 dataMap = DataMapItem.fromDataItem(item).getDataMap();
-                final int myPoints= dataMap.getInt(KEY_MY_POINTS);
+                final int myPoints = dataMap.getInt(KEY_MY_POINTS);
                 final int myGames = dataMap.getInt(KEY_MY_GAMES);
                 final int mySets = dataMap.getInt(KEY_MY_SETS);
                 final int theirPoints = dataMap.getInt(KEY_THEIR_POINTS);
