@@ -9,11 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 
-public class MainActivity extends AppCompatActivity implements MessageApi.MessageListener, GoogleApiClient.ConnectionCallbacks {
+public class MainActivity extends AppCompatActivity implements MessageApi.MessageListener, GoogleApiClient.ConnectionCallbacks,
+        DataApi.DataListener{
     private static final String SEND_TEXT_MOBILE = "/mandar_texto";
     private GoogleApiClient apiClient;
 
@@ -60,9 +63,8 @@ public class MainActivity extends AppCompatActivity implements MessageApi.Messag
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
+    public void onConnected(Bundle bundle) {
         Wearable.MessageApi.addListener(apiClient, this);
-
     }
 
     @Override
@@ -82,6 +84,11 @@ public class MainActivity extends AppCompatActivity implements MessageApi.Messag
             });
         }
 
+    }
+
+    @Override
+    public void onDataChanged(DataEventBuffer dataEventBuffer) {
+        Log.e("MobileMain","ha cambiado un dato");
     }
 
 

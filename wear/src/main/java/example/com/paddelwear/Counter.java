@@ -19,12 +19,16 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import java.util.Date;
 
 import example.com.common.DireccionesGestureDetector;
 import example.com.common.Partida;
+
+import static com.google.android.gms.wearable.DataApi.*;
 
 /**
  * Created by usuwi on 10/06/2017.
@@ -39,12 +43,19 @@ public class Counter extends WearableActivity {
     private DismissOverlayView dismissOverlay;
 
     private Typeface normalFont = Typeface.create("sans-serif", 0);
-    private Typeface thinFont = Typeface.create
-            ("sans-serif-thin", 0);
+    private Typeface thinFont = Typeface.create("sans-serif-thin", 0);
     private Calendar c;
 
-    private static final String START_MOBILE_ACTIVITY="/arrancar_actividad";
+    private static final String START_MOBILE_ACTIVITY = "/arrancar_actividad";
     private GoogleApiClient apiClient;
+
+    private static final String WEAR_SCORE = "/puntuacion";
+    private static final String KEY_MY_POINTS = "com.example.padel.key.my_points";
+    private static final String KEY_MY_GAMES = "com.example.padel.key.my_games";
+    private static final String KEY_MY_SETS = "com.example.padel.key.my_sets";
+    private static final String KEY_THEIR_POINTS = "com.example.padel.key.their_points";
+    private static final String KEY_THEIR_GAMES = "com.example.padel.key.their_games";
+    private static final String KEY_THEIR_SETS = "com.example.padel.key.their_sets";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +68,18 @@ public class Counter extends WearableActivity {
 
         match = new Partida();
 
+        apiClient = new GoogleApiClient.Builder(this).addApi(Wearable.API).build();
+        sendMessage(START_MOBILE_ACTIVITY, "Arrancar actividad en el móvil");
+
         time = (TextView) findViewById(R.id.time);
         c = Calendar.getInstance();
         vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         myPoints = (TextView) findViewById(R.id.myPoints);
         myPoints.setTextColor(Color.GREEN);
+
         theirPoints = (TextView) findViewById(R.id.theirPoints);
         theirPoints.setTextColor(Color.GREEN);
+
         myGames = (TextView) findViewById(R.id.myGames);
         myGames.setTextColor(Color.GREEN);
         theirGames = (TextView) findViewById(R.id.theirGames);
@@ -71,12 +87,9 @@ public class Counter extends WearableActivity {
         mySets = (TextView) findViewById(R.id.mySets);
         mySets.setTextColor(Color.GREEN);
         theirSets = (TextView) findViewById(R.id.theirSets);
-        theirSets.setTextColor(Color.GREEN);
+        theirSets.setTextColor(Color.GREEN);//
         actualizaNumeros();
         View fondo = findViewById(R.id.background);
-
-        apiClient = new GoogleApiClient.Builder(this).addApi(Wearable.API).build();
-        sendMessage(START_MOBILE_ACTIVITY, "Arrancar actividad en el móvil");
 
         // Configuramos el detector de pulsaciones
 
@@ -158,6 +171,7 @@ public class Counter extends WearableActivity {
     }
 
     void actualizaNumeros() {
+        syncData();
         myPoints.setText(match.getMisPuntos());
         theirPoints.setText(match.getSusPuntos());
         myGames.setText(match.getMisJuegos());
@@ -221,10 +235,10 @@ public class Counter extends WearableActivity {
 
     }
 
-    public void setHour(){
+    public void setHour() {
         c.setTime(new Date());
         time.setText(c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
-        Log.e("Counter","setHour : " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
+        Log.e("Counter", "setHour : " + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE));
     }
 
     @Override
@@ -267,5 +281,18 @@ public class Counter extends WearableActivity {
                 }
             }
         }).start();
+    }
+    private void syncData() {
+        Log.e("Padel Wear", "Sincronizando...");
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(WEAR_SCORE);
+        putDataMapReq.getDataMap().putInt(KEY_MY_POINTS, Integer.parseInt(match.getMisPuntos()));
+        putDataMapReq.getDataMap().putInt(KEY_MY_GAMES, Integer.parseInt(match.getMisJuegos()));
+        putDataMapReq.getDataMap().putInt(KEY_MY_SETS, Integer.parseInt(match.getMisSets()));
+        putDataMapReq.getDataMap().putInt(KEY_THEIR_POINTS, Integer.parseInt(match.getSusPuntos()));
+        putDataMapReq.getDataMap().putInt(KEY_THEIR_GAMES, Integer.parseInt(match.getSusJuegos()));
+        putDataMapReq.getDataMap().putInt(KEY_THEIR_SETS, Integer.parseInt(match.getSusSets()));
+
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        Wearable.DataApi.putDataItem(apiClient, putDataReq);
     }
 }
