@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/step_counter"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:text="0"
-    android:textAppearance="?android:attr/textAppearanceLarge" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darkGreen"
+    android:orientation="vertical"
+    android:textStyle="bold">
+
+    <TextView
+        android:id="@+id/step_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical|center_horizontal|center"
+        android:text="200"
+        android:paddingTop="7px"
+        android:paddingLeft="40px"
+        android:textAlignment="center"
+        android:textColor="@color/paddelGreen"
+        android:textSize="36sp"/>
+</LinearLayout>
