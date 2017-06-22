@@ -32,6 +32,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="15"
+                android:textColor="@color/paddelGreen"
                 android:textSize="1000dp" />
 
             <LinearLayout
@@ -47,6 +48,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="3"
+                    android:textColor="@color/paddelGreen"
                     android:textSize="1000dp" />
 
                 <example.com.common.AutoScaleTextView
@@ -56,6 +58,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="1"
+                    android:textColor="@color/paddelGreen"
                     android:textSize="1000dp" />
             </LinearLayout>
         </LinearLayout>
@@ -74,6 +77,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="30"
+                android:textColor="@color/paddelGreen"
                 android:textSize="1000dp" />
 
             <LinearLayout
@@ -89,6 +93,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="4"
+                    android:textColor="@color/paddelGreen"
                     android:textSize="1000dp" />
 
                 <example.com.common.AutoScaleTextView
@@ -98,6 +103,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="1"
+                    android:textColor="@color/paddelGreen"
                     android:textSize="1000dp" />
             </LinearLayout>
         </LinearLayout>

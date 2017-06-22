@@ -75,19 +75,18 @@ public class Counter extends WearableActivity {
         c = Calendar.getInstance();
         vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         myPoints = (TextView) findViewById(R.id.myPoints);
-        myPoints.setTextColor(Color.GREEN);
 
         theirPoints = (TextView) findViewById(R.id.theirPoints);
-        theirPoints.setTextColor(Color.GREEN);
+       // theirPoints.setTextColor(Color.GREEN);
 
         myGames = (TextView) findViewById(R.id.myGames);
-        myGames.setTextColor(Color.GREEN);
+       // myGames.setTextColor(Color.GREEN);
         theirGames = (TextView) findViewById(R.id.theirGames);
-        theirGames.setTextColor(Color.GREEN);
+       // theirGames.setTextColor(Color.GREEN);
         mySets = (TextView) findViewById(R.id.mySets);
-        mySets.setTextColor(Color.GREEN);
+      //  mySets.setTextColor(Color.GREEN);
         theirSets = (TextView) findViewById(R.id.theirSets);
-        theirSets.setTextColor(Color.GREEN);//
+       // theirSets.setTextColor(Color.GREEN);//
         actualizaNumeros();
         View fondo = findViewById(R.id.background);
 

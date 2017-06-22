@@ -15,6 +15,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Jugadores"
+            android:textColor="@color/paddelGreen"
+            android:textAlignment="center"
+            android:textAllCaps="true"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <LinearLayout

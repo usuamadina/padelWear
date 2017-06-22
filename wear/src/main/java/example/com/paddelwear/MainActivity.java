@@ -40,6 +40,8 @@ public class MainActivity extends WearableActivity {
                     case 6:
                         startActivity(new Intent(MainActivity.this,Steps2.class));
                         break;
+                    case 7:
+                        startActivity(new Intent(MainActivity.this,HeartRate.class));
                 }
             }
         });
